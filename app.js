@@ -77,15 +77,22 @@ app.get("/api/paises/:nombrePais", (req,res)=>{
     res.json(resultado)
     console.log(resultadoFilter);
 })
-
+// api/year/2024 -> objetos con añó 2024
 app.get("/api/year/:year", (req,res)=>{
-    const year = req.params.year // aqui el nombre despues de :, o directamente abajo
+    let year = req.params.year // aqui el nombre despues de :, o directamente abajo
     const resultado =[]
 
     const resultadoFilter2 = jsonData.filter(objeto => objeto.anyo == year)
     if(resultadoFilter2.length==0) return res.json({"respuesta": "No hay datos en este momento"}) 
     res.json(resultadoFilter2)
     // console.log(resultadoFilter2);
+})
+
+// api/year/2024/Italia -> objetos con añó 2024
+app.get("/api/year/:year/:nombrePais", (req,res)=>{
+    const resultadoFilter3 = jsonData.filter(objeto=>objeto.anyo==req.params.year && objeto.pais.toLocaleLowerCase()==req.params.nombrePais.toLocaleLowerCase())
+    if(resultadoFilter3.length==0) return res.json({"respuesta": "No hay datos en este momento"}) 
+    res.json(resultadoFilter3)
 })
 
 
