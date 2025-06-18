@@ -7,6 +7,7 @@ process.loadEnvFile();
 const PORT = process.env.PORT || 8888;
 
 const jsonData = require("./ventas.json");
+const { json } = require("node:stream/consumers");
 // console.log(jsonData);
 
 app.get("/", (req, res) => res.send("Hello World!"));
@@ -69,7 +70,22 @@ app.get("/api/paises/:nombrePais", (req,res)=>{
             resultado.push(objeto) // si pais esta en el objeto añadimos objeto a array
         }
     }
+
+    // el mismo for con filter
+    const resultadoFilter = jsonData.filter(objeto => objeto.pais.toLocaleLowerCase() == nombrePais)    // en comparaciones si se puede toLowerCase a la izquierda del =
+    if(resultado.length==0) return res.json({"respuesta": "No hay datos en este momento"}) 
     res.json(resultado)
+    console.log(resultadoFilter);
+})
+
+app.get("/api/year/:year", (req,res)=>{
+    const year = req.params.year // aqui el nombre despues de :, o directamente abajo
+    const resultado =[]
+
+    const resultadoFilter2 = jsonData.filter(objeto => objeto.anyo == year)
+    if(resultadoFilter2.length==0) return res.json({"respuesta": "No hay datos en este momento"}) 
+    res.json(resultadoFilter2)
+    // console.log(resultadoFilter2);
 })
 
 
